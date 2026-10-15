@@ -17,10 +17,12 @@ from pathlib import Path
 
 import pytest
 
+
 ROOT = Path(__file__).resolve().parents[1]
 MEMBERS_DIR = ROOT / "members"
 
 ALLOW_MISSING = os.getenv("PY_W1_ALLOW_MISSING") == "1"
+
 
 # Update this mapping when the team and TA confirm the final W1-4 allocation.
 IMPLEMENTATIONS = {
@@ -30,7 +32,6 @@ IMPLEMENTATIONS = {
     "sieve": ("dmdung2520", "sieve"),
     "bubble_sort": ("fumeneko", "bubble_sort"),
     "palindrome_checker": ("lnmthi", "palindrome_checker"),
-    # Do not add a guessed function here.
 }
 
 
@@ -40,13 +41,16 @@ def load_function(username, function_name):
 
     if not path.is_file():
         message = f"Missing implementation file: {path}"
+
         if ALLOW_MISSING:
             pytest.skip(message)
+
         pytest.fail(message)
 
     spec = importlib.util.spec_from_file_location(
         f"week1_{username}_{function_name}", path
     )
+
     if spec is None or spec.loader is None:
         pytest.fail(f"Cannot load module: {path}")
 
@@ -54,6 +58,7 @@ def load_function(username, function_name):
     spec.loader.exec_module(module)
 
     function = getattr(module, function_name, None)
+
     if not callable(function):
         pytest.fail(
             f"Expected callable {function_name}() in {path}"
@@ -61,6 +66,10 @@ def load_function(username, function_name):
 
     return function
 
+
+# ---------------------------------------------------------
+# Fixtures
+# ---------------------------------------------------------
 
 @pytest.fixture(scope="module")
 def binary_search():
@@ -86,10 +95,10 @@ def sieve():
 def bubble_sort():
     return load_function(*IMPLEMENTATIONS["bubble_sort"])
 
+
 @pytest.fixture(scope="module")
 def palindrome_checker():
     return load_function(*IMPLEMENTATIONS["palindrome_checker"])
-
 
 
 # ---------------------------------------------------------
@@ -117,6 +126,7 @@ def test_binary_search_edges(binary_search, values, target, expected):
 # ---------------------------------------------------------
 # Insertion Sort
 # Assumed contract: return a sorted list in ascending order.
+# The original input list must remain unchanged.
 # ---------------------------------------------------------
 
 @pytest.mark.parametrize(
@@ -141,6 +151,7 @@ def test_insertion_sort_edges(insertion_sort, values, expected):
 # ---------------------------------------------------------
 # Matrix Transpose
 # Assumed contract: return a new transposed matrix.
+# The original matrix must remain unchanged.
 # ---------------------------------------------------------
 
 @pytest.mark.parametrize(
@@ -156,13 +167,14 @@ def test_insertion_sort_edges(insertion_sort, values, expected):
 )
 def test_transpose_edges(transpose, matrix, expected):
     original = [row.copy() for row in matrix]
+
     assert transpose(matrix) == expected
     assert matrix == original
 
 
 # ---------------------------------------------------------
 # Sieve of Eratosthenes
-# Assumed contract: primes less than or equal to n.
+# Assumed contract: return primes less than or equal to n.
 # ---------------------------------------------------------
 
 @pytest.mark.parametrize(
@@ -184,6 +196,7 @@ def test_sieve_edges(sieve, n, expected):
 # ---------------------------------------------------------
 # Bubble Sort
 # Assumed contract: return a sorted list in ascending order.
+# The original input list must remain unchanged.
 # ---------------------------------------------------------
 
 @pytest.mark.parametrize(
@@ -208,7 +221,8 @@ def test_bubble_sort_edges(bubble_sort, values, expected):
 
 # ---------------------------------------------------------
 # Palindrome Checker
-# Assumed contract: returns a boolean; comparisons are case-sensitive.
+# Assumed contract: return a boolean; comparisons are case-sensitive.
+# An empty string is considered a palindrome.
 # ---------------------------------------------------------
 
 @pytest.mark.parametrize(
@@ -222,8 +236,5 @@ def test_bubble_sort_edges(bubble_sort, values, expected):
         ("", True),
     ],
 )
-def test_palindrome_checker_edges(value, expected):
-    palindrome_checker = load_function(
-        *IMPLEMENTATIONS["palindrome_checker"]
-    )
+def test_palindrome_checker_edges(palindrome_checker, value, expected):
     assert palindrome_checker(value) is expected
