@@ -1,69 +1,239 @@
 
+"""Edge-case tests for the Python Bootcamp Week 1 algorithms.
+
+Expected repository layout:
+python-bootcamp/
+    members/<username>/w1/translate.py
+    tests/test_w1_edge_cases.py
+
+Missing implementations are errors by default. During team integration,
+set PY_W1_ALLOW_MISSING=1 to temporarily skip only members whose files
+have not been merged yet.
+"""
+
 import importlib.util
+import os
 from pathlib import Path
 
 import pytest
 
-W1_DIR = (
-    Path(__file__).resolve().parents[1]
-    / "members"
-    / "vinhdu1233_tech"
-    / "w1"
-)
+ROOT = Path(__file__).resolve().parents[1]
+MEMBERS_DIR = ROOT / "members"
+
+ALLOW_MISSING = os.getenv("PY_W1_ALLOW_MISSING") == "1"
 
 
-def load_module(name):
-    path = W1_DIR / f"{name}.py"
-    spec = importlib.util.spec_from_file_location(name, path)
-    assert spec is not None
-    assert spec.loader is not None
+# Update this mapping when the team and TA confirm the final W1-4 allocation.
+IMPLEMENTATIONS = {
+    "binary_search": ("vinhdu1233_tech", "binary_search"),
+    "insertion_sort": ("TuanTu2205", "insertion_sort"),
+    "transpose": ("tree312_coder", "transpose"),
+    "sieve": ("dmdung2520", "sieve"),
+    "bubble_sort": ("fumeneko", "bubble_sort"),
+    "palindrome_checker": ("lnmthi", "palindrome_checker"),
+}
+
+
+def load_function(username, function_name):
+    """Import a required function from the member's translate.py."""
+    path = MEMBERS_DIR / username / "w1" / "translate.py"
+
+    if not path.is_file():
+        message = f"Missing implementation file: {path}"
+
+        if ALLOW_MISSING:
+            pytest.skip(message)
+
+        pytest.fail(message)
+
+    spec = importlib.util.spec_from_file_location(
+        f"week1_{username}_{function_name}", path
+    )
+
+    if spec is None or spec.loader is None:
+        pytest.fail(f"Cannot load module: {path}")
 
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module
+
+    function = getattr(module, function_name, None)
+
+    if not callable(function):
+        pytest.fail(
+            f"Expected callable {function_name}() in {path}"
+        )
+
+    return function
 
 
-def test_grades_empty_input():
-    grades = load_module("grades")
+# ---------------------------------------------------------
+# Fixtures
+# ---------------------------------------------------------
 
-    with pytest.raises(ValueError):
-        grades.summary([])
-
-
-def test_grades_single_score():
-    grades = load_module("grades")
-
-    result = grades.summary([8])
-    assert result["min"] == 8
-    assert result["max"] == 8
-    assert result["mean"] == 8
-    assert result["median"] == 8
+@pytest.fixture(scope="module")
+def binary_search():
+    return load_function(*IMPLEMENTATIONS["binary_search"])
 
 
-def test_word_counter_alphabetical_tie():
-    text_tools = load_module("text_tools")
-
-    result = text_tools.top_k(
-        "Banana apple banana apple",
-        2
-    )
-    assert result == [("apple", 2), ("banana", 2)]
+@pytest.fixture(scope="module")
+def insertion_sort():
+    return load_function(*IMPLEMENTATIONS["insertion_sort"])
 
 
-def test_thesis_boundary():
-    rules = load_module("rules")
-
-    assert rules.can_register_thesis(120, 2.0)
-    assert not rules.can_register_thesis(119, 2.0)
+@pytest.fixture(scope="module")
+def transpose():
+    return load_function(*IMPLEMENTATIONS["transpose"])
 
 
-def test_binary_search_empty_input():
-    translate = load_module("translate")
+@pytest.fixture(scope="module")
+def sieve():
+    return load_function(*IMPLEMENTATIONS["sieve"])
 
-    assert translate.binary_search([], 5) == -1
+
+@pytest.fixture(scope="module")
+def bubble_sort():
+    return load_function(*IMPLEMENTATIONS["bubble_sort"])
 
 
-def test_timetable_empty_input():
-    timetable = load_module("timetable")
+@pytest.fixture(scope="module")
+def palindrome_checker():
+    return load_function(*IMPLEMENTATIONS["palindrome_checker"])
 
-    assert timetable.by_day([]) == {}
+
+# ---------------------------------------------------------
+# Binary Search
+# Assumed contract: sorted list, return index or -1 if absent.
+# ---------------------------------------------------------
+
+@pytest.mark.parametrize(
+    ("values", "target", "expected"),
+    [
+        ([], 5, -1),
+        ([7], 7, 0),
+        ([7], 3, -1),
+        ([1, 3, 5, 7, 9], 1, 0),
+        ([1, 3, 5, 7, 9], 9, 4),
+        ([1, 3, 5, 7, 9], 5, 2),
+        ([1, 3, 5, 7, 9], 4, -1),
+        ([-9, -3, 0, 4], -9, 0),
+    ],
+)
+def test_binary_search_edges(binary_search, values, target, expected):
+    assert binary_search(values, target) == expected
+
+
+# ---------------------------------------------------------
+# Insertion Sort
+# Assumed contract: return a sorted list in ascending order.
+# The original input list must remain unchanged.
+# ---------------------------------------------------------
+
+@pytest.mark.parametrize(
+    ("values", "expected"),
+    [
+        ([], []),
+        ([1], [1]),
+        ([3, 2, 1], [1, 2, 3]),
+        ([1, 2, 3], [1, 2, 3]),
+        ([4, 4, 4], [4, 4, 4]),
+        ([3, -1, 0, -5], [-5, -1, 0, 3]),
+    ],
+)
+def test_insertion_sort_edges(insertion_sort, values, expected):
+    original = values.copy()
+    result = insertion_sort(values)
+
+    assert result == expected
+    assert values == original
+
+
+# ---------------------------------------------------------
+# Matrix Transpose
+# Assumed contract: return a new transposed matrix.
+# The original matrix must remain unchanged.
+# ---------------------------------------------------------
+
+@pytest.mark.parametrize(
+    ("matrix", "expected"),
+    [
+        ([], []),
+        ([[1]], [[1]]),
+        ([[1, 2, 3]], [[1], [2], [3]]),
+        ([[1], [2], [3]], [[1, 2, 3]]),
+        ([[1, 2], [3, 4]], [[1, 3], [2, 4]]),
+        ([[1, 2, 3], [4, 5, 6]], [[1, 4], [2, 5], [3, 6]]),
+    ],
+)
+def test_transpose_edges(transpose, matrix, expected):
+    original = [row.copy() for row in matrix]
+
+    assert transpose(matrix) == expected
+    assert matrix == original
+
+
+# ---------------------------------------------------------
+# Sieve of Eratosthenes
+# Assumed contract: return primes less than or equal to n.
+# ---------------------------------------------------------
+
+@pytest.mark.parametrize(
+    ("n", "expected"),
+    [
+        (-5, []),
+        (0, []),
+        (1, []),
+        (2, [2]),
+        (3, [2, 3]),
+        (10, [2, 3, 5, 7]),
+        (20, [2, 3, 5, 7, 11, 13, 17, 19]),
+    ],
+)
+def test_sieve_edges(sieve, n, expected):
+    assert sieve(n) == expected
+
+
+# ---------------------------------------------------------
+# Bubble Sort
+# Assumed contract: return a sorted list in ascending order.
+# The original input list must remain unchanged.
+# ---------------------------------------------------------
+
+@pytest.mark.parametrize(
+    ("values", "expected"),
+    [
+        ([], []),
+        ([1], [1]),
+        ([2, 1], [1, 2]),
+        ([1, 2, 3], [1, 2, 3]),
+        ([3, 2, 1], [1, 2, 3]),
+        ([2, 2, 1, 2], [1, 2, 2, 2]),
+        ([-3, 0, -1, 5], [-3, -1, 0, 5]),
+    ],
+)
+def test_bubble_sort_edges(bubble_sort, values, expected):
+    original = values.copy()
+    result = bubble_sort(values)
+
+    assert result == expected
+    assert values == original
+
+
+# ---------------------------------------------------------
+# Palindrome Checker
+# Assumed contract: return a boolean; comparisons are case-sensitive.
+# An empty string is considered a palindrome.
+# ---------------------------------------------------------
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("racecar", True),
+        ("hello", False),
+        ("a", True),
+        ("12321", True),
+        ("12345", False),
+        ("", True),
+    ],
+)
+def test_palindrome_checker_edges(palindrome_checker, value, expected):
+    assert palindrome_checker(value) is expected
