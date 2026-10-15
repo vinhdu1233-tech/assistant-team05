@@ -29,7 +29,7 @@ IMPLEMENTATIONS = {
     "transpose": ("tree312_coder", "transpose"),
     "sieve": ("dmdung2520", "sieve"),
     "bubble_sort": ("fumeneko", "bubble_sort"),
-    # Member 6's W1-4 variant must be confirmed with the TA.
+    "palindrome_checker": ("lnmthi", "palindrome_checker"),
     # Do not add a guessed function here.
 }
 
@@ -199,3 +199,19 @@ def test_bubble_sort_edges(bubble_sort, values, expected):
 
     assert result == expected
     assert values == original
+
+
+# ---------------------------------------------------------
+# Palindome Checker
+# Assumed contract: returns a boolean; comparisons are case-sensitive.
+# ---------------------------------------------------------
+
+def test_palindrome_checker_edges():
+    palindrome_checker = load_function("lnmthi","palindrome_checker")
+
+    assert palindrome_checker("racecar") is True
+    assert palindrome_checker("hello") is False
+    assert palindrome_checker("a") is True
+    assert palindrome_checker("12321") is True
+    assert palindrome_checker("12345") is False
+    assert palindrome_checker("") is True
