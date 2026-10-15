@@ -20,11 +20,11 @@ Reviewer (rotation): vinhdu1233_tech
 
 ## Individual Exercises
 
-- [ ] W1-1: Grade Summary
-- [ ] W1-2: Word Counter
-- [ ] W1-3: Thesis Eligibility
-- [ ] W1-4: Translate C++ to Python
-- [ ] W1-5: Group the Timetable
+- [] W1-1: Grade Summary
+- [] W1-2: Word Counter
+- [] W1-3: Thesis Eligibility
+- [] W1-4: Translate C++ to Python
+- [] W1-5: Group the Timetable
 
 ## Time Tracking
 
