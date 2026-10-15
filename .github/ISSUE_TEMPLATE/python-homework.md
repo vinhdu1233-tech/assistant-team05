@@ -12,11 +12,11 @@ assignees: ''
 
 Week: w1
 
-Member: @github-username
+Member: lnmthi
 
-Member Number:
+Member Number: 6
 
-Reviewer (rotation): @reviewer-username
+Reviewer (rotation): vinhdu1233_tech
 
 ## Individual Exercises
 
@@ -28,18 +28,23 @@ Reviewer (rotation): @reviewer-username
 
 ## Time Tracking
 
-Estimated hours:
+Estimated hours: 5 hours
 
-Actual hours:
+Actual hours: 4 hours
 
 ## Pull Request
 
-PR Link:
+PR Link: https://github.com/vinhdu1233-tech/assistant-team05/pull/10
 
 ## Testing
 
 Test results:
+- W1-1: Grade summary — tested individually.
+- W1-2: Word counter — tested individually.
+- W1-3: Thesis eligibility — tested individually.
+- W1-4: Insertion sort — tested individually.
+- W1-5: Group the timetable — tested individually.
 
 ## Notes
 
-Additional comments or difficulties:
+Additional comments or difficulties: All individual W1 exercises are located in python-bootcamp/members/lnmthi/w1/. W1-4 uses insertion sort in place and returns the sorted list.
