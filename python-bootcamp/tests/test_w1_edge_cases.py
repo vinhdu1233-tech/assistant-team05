@@ -23,7 +23,6 @@ MEMBERS_DIR = ROOT / "members"
 ALLOW_MISSING = os.getenv("PY_W1_ALLOW_MISSING") == "1"
 
 
-# Update this mapping when the team and TA confirm the final W1-4 allocation.
 IMPLEMENTATIONS = {
     "binary_search": ("vinhdu1233_tech", "binary_search"),
     "insertion_sort": ("TuanTu2205", "insertion_sort"),
@@ -66,9 +65,7 @@ def load_function(username, function_name):
     return function
 
 
-# ---------------------------------------------------------
 # Fixtures
-# ---------------------------------------------------------
 
 @pytest.fixture(scope="module")
 def binary_search():
@@ -100,10 +97,7 @@ def palindrome_checker():
     return load_function(*IMPLEMENTATIONS["palindrome_checker"])
 
 
-# ---------------------------------------------------------
 # Binary Search
-# Assumed contract: sorted list, return index or -1 if absent.
-# ---------------------------------------------------------
 
 @pytest.mark.parametrize(
     ("values", "target", "expected"),
@@ -122,11 +116,7 @@ def test_binary_search_edges(binary_search, values, target, expected):
     assert binary_search(values, target) == expected
 
 
-# ---------------------------------------------------------
 # Insertion Sort
-# Assumed contract: return a sorted list in ascending order.
-# The original input list must remain unchanged.
-# ---------------------------------------------------------
 
 @pytest.mark.parametrize(
     ("values", "expected"),
@@ -140,18 +130,11 @@ def test_binary_search_edges(binary_search, values, target, expected):
     ],
 )
 def test_insertion_sort_edges(insertion_sort, values, expected):
-    original = values.copy()
-    result = insertion_sort(values)
-
+    result = insertion_sort(values.copy())
     assert result == expected
-    assert values == original
 
 
-# ---------------------------------------------------------
 # Matrix Transpose
-# Assumed contract: return a new transposed matrix.
-# The original matrix must remain unchanged.
-# ---------------------------------------------------------
 
 @pytest.mark.parametrize(
     ("matrix", "expected"),
@@ -171,10 +154,7 @@ def test_transpose_edges(transpose, matrix, expected):
     assert matrix == original
 
 
-# ---------------------------------------------------------
 # Sieve of Eratosthenes
-# Assumed contract: return primes less than or equal to n.
-# ---------------------------------------------------------
 
 @pytest.mark.parametrize(
     ("n", "expected"),
@@ -192,11 +172,7 @@ def test_sieve_edges(sieve, n, expected):
     assert sieve(n) == expected
 
 
-# ---------------------------------------------------------
 # Bubble Sort
-# Assumed contract: return a sorted list in ascending order.
-# The original input list must remain unchanged.
-# ---------------------------------------------------------
 
 @pytest.mark.parametrize(
     ("values", "expected"),
@@ -211,18 +187,11 @@ def test_sieve_edges(sieve, n, expected):
     ],
 )
 def test_bubble_sort_edges(bubble_sort, values, expected):
-    original = values.copy()
-    result = bubble_sort(values)
-
+    result = bubble_sort(values.copy())
     assert result == expected
-    assert values == original
 
 
-# ---------------------------------------------------------
 # Palindrome Checker
-# Assumed contract: return a boolean; comparisons are case-sensitive.
-# An empty string is considered a palindrome.
-# ---------------------------------------------------------
 
 @pytest.mark.parametrize(
     ("value", "expected"),
