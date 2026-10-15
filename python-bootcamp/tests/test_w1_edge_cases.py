@@ -86,6 +86,11 @@ def sieve():
 def bubble_sort():
     return load_function(*IMPLEMENTATIONS["bubble_sort"])
 
+@pytest.fixture(scope="module")
+def palindrome_checker():
+    return load_function(*IMPLEMENTATIONS["palindrome_checker"])
+
+
 
 # ---------------------------------------------------------
 # Binary Search
@@ -202,16 +207,23 @@ def test_bubble_sort_edges(bubble_sort, values, expected):
 
 
 # ---------------------------------------------------------
-# Palindome Checker
+# Palindrome Checker
 # Assumed contract: returns a boolean; comparisons are case-sensitive.
 # ---------------------------------------------------------
 
-def test_palindrome_checker_edges():
-    palindrome_checker = load_function("lnmthi","palindrome_checker")
-
-    assert palindrome_checker("racecar") is True
-    assert palindrome_checker("hello") is False
-    assert palindrome_checker("a") is True
-    assert palindrome_checker("12321") is True
-    assert palindrome_checker("12345") is False
-    assert palindrome_checker("") is True
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("racecar", True),
+        ("hello", False),
+        ("a", True),
+        ("12321", True),
+        ("12345", False),
+        ("", True),
+    ],
+)
+def test_palindrome_checker_edges(value, expected):
+    palindrome_checker = load_function(
+        *IMPLEMENTATIONS["palindrome_checker"]
+    )
+    assert palindrome_checker(value) is expected
