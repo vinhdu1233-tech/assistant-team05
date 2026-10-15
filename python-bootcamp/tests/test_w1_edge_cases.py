@@ -29,7 +29,7 @@ IMPLEMENTATIONS = {
     "transpose": ("tree312_coder", "transpose"),
     "sieve": ("dmdung2520", "sieve"),
     "bubble_sort": ("fumeneko", "bubble_sort"),
-    "palindrome_checker": ("lnmthi", "palindrome_checker"),
+    "palindrome_checker": ("lnmthi", "is_palindrome"),
 }
 
 
