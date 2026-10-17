@@ -38,3 +38,12 @@ the sample dataset and documenting its structure.
 ## Current Status
 The sample dataset is included as part of
 the initial Lab 1 project setup.
+
+### Adding New Records
+1. Open the `data/offices.csv` file.
+2. Add a new row following the format: `name,room,hours`.
+3. Ensure all required fields contain valid, non-empty values.
+4. Verify that the office name is not duplicated.
+
+### Sample Data Disclaimer
+The current records in `data/offices.csv` are **sample/mock data** intended for system testing and demonstration purposes only. They have not been fully verified against real-time administrative records.
