@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Virtual Assistant</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f5f9;
+            color: #202938;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 48px auto;
+            padding: 24px;
+        }
+
+        .chat-card {
+            background: white;
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px #0000000d;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 26px;
+        }
+
+        .instructions {
+            color: #586579;
+            line-height: 1.6;
+        }
+
+        .message {
+            margin: 24px 0;
+            padding: 16px;
+            border-radius: 10px;
+            background: #eef4ff;
+            line-height: 1.6;
+        }
+
+        .source {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #46556b;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 12px;
+            border: 1px solid #cbd2df;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            padding: 12px 18px;
+            border: 0;
+            border-radius: 8px;
+            background: #2458c6;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .note {
+            margin-top: 18px;
+            font-size: 13px;
+            color: #687386;
+        }
+
+        @media (max-width: 520px) {
+            .container {
+                margin: 16px auto;
+                padding: 12px;
+            }
+
+            .input-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <section class="chat-card">
+            <h1>Smart Virtual Assistant</h1>
+
+            <p class="instructions">
+                Ask a question about campus offices, locations,
+                or opening hours. Enter your question below.
+            </p>
+
+            <section aria-label="Example assistant response"
+                     class="message">
+                <strong>Example response</strong>
+                <p>
+                    IT Helpdesk: room E.005, open Mon-Fri
+                    08:00-17:00.
+                </p>
+                <p class="source">
+                    Source: Sample office data.
+                    This example has not been verified
+                    against official university information.
+                </p>
+            </section>
+
+            <form id="question-form">
+                <label for="question">Your question</label>
+                <div class="input-row">
+                    <input
+                        id="question"
+                        name="question"
+                        type="text"
+                        placeholder="Where is the IT helpdesk?"
+                        required
+                    >
+                    <button type="submit">Send</button>
+                </div>
+            </form>
+
+            <p id="status" role="status" aria-live="polite"
+               class="note">
+                Prototype only: answers are not generated
+                by the assistant yet.
+            </p>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById("question-form")
+            .addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const question =
+                    document.getElementById("question").value.trim();
+
+                if (question) {
+                    document.getElementById("status").textContent =
+                        "Your question was entered successfully. " +
+                        "Live assistant responses are not connected yet.";
+                }
+            });
+    </script>
+</body>
+</html>
