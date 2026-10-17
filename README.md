@@ -264,3 +264,10 @@ Open the Command Palette in VS Code and select:
 Python: Select Interpreter
 
 Choose the Python interpreter located inside the `.venv` folder.
+
+### Dataset validation tests
+
+Run the office dataset validation tests with:
+
+```bash
+python -m pytest -q tests/test_offices_validation.py
