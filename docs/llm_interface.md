@@ -16,16 +16,26 @@ The interface is defined in `src/llm_interface.py`.
 
 ## Input and Output
 
-The prompt must be a non-empty string. A successful implementation
-returns a string containing the generated response.
+The prompt must be a string containing at least one
+non-whitespace character.
+
+- A prompt that is not a string raises `TypeError`.
+- An empty or whitespace-only prompt raises `ValueError`.
+- A successful response must be a string.
+- A response with an invalid type raises `TypeError`.
 
 ## Error Handling and Fallback
 
-- Reject empty prompts with `ValueError`.
-- Raise `LLMServiceError` when generation fails or the service is
-  unavailable.
-- Implementations may return a safe fallback message when appropriate.
-- Do not expose API keys, credentials, or internal provider errors.
+- Invalid prompts raise `TypeError` or `ValueError`
+  during input validation.
+- Provider implementations should raise `LLMServiceError`
+  when generation fails or the service is unavailable.
+- Implementations may return a safe fallback message when
+  appropriate.
+- Implementations must avoid exposing API keys, credentials,
+  or sensitive internal provider errors.
+- Provider-specific errors should be handled according to
+  the application's error-handling policy.
 
 ## Future Implementations
 
