@@ -182,6 +182,25 @@ All environment checks should display `[ OK ]`.
 - `pyproject.toml` — Python project configuration.
 - `.gitignore` — Files and folders excluded from Git tracking.
 
+## Dataset validation tests
+
+Run the office dataset validation tests with:
+
+```bash
+python -m pytest -q tests/test_offices_validation.py
+```
+
+## Environment Configuration
+
+The repository includes a `.env.example`
+file with placeholder configuration values.
+
+To create a local configuration file:
+
+```bash
+cp .env.example .env
+```
+
 ## Troubleshooting
 
 ### 1. Python version is too old
@@ -264,13 +283,3 @@ Open the Command Palette in VS Code and select:
 Python: Select Interpreter
 
 Choose the Python interpreter located inside the `.venv` folder.
-
-## Environment Configuration
-
-The repository includes a `.env.example`
-file with placeholder configuration values.
-
-To create a local configuration file:
-
-```bash
-cp .env.example .env
