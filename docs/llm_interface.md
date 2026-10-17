@@ -29,7 +29,10 @@ returns a string containing the generated response.
 
 ## Future Implementations
 
-Future providers should subclass `LLMService`, implement
-`generate_response`, and handle provider-specific errors.
+Future providers should subclass `LLMService` and implement
+`_generate_response(prompt: str) -> str`.
+
+Callers should use `generate_response()` to ensure common
+input validation and response-type checking are applied.
 
 The interface does not make actual network calls or require an API key.
