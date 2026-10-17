@@ -264,3 +264,13 @@ Open the Command Palette in VS Code and select:
 Python: Select Interpreter
 
 Choose the Python interpreter located inside the `.venv` folder.
+
+## Environment Configuration
+
+The repository includes a `.env.example`
+file with placeholder configuration values.
+
+To create a local configuration file:
+
+```bash
+cp .env.example .env
