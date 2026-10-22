@@ -2,5 +2,6 @@ CSC10014 — Team 05 Python Bootcamp (Homework 1)
 
 Repository: https://github.com/vinhdu1233-tech/python-bootcamp-team05
 Week 1 tag: https://github.com/vinhdu1233-tech/python-bootcamp-team05/tree/py-w1-done
+Week 2 tag: https://github.com/vinhdu1233-tech/python-bootcamp-team05/tree/py-w2-done
 
 Homework source code, tests, CI, and progress tracking are maintained in the separate repository above.
